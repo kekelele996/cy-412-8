@@ -8,6 +8,9 @@ public final class Messages {
     public static final String LOG_USER_PROFILE = "User[id=%s] profile updated: field=building/unit/room role=%s";
     public static final String LOG_ANNOUNCEMENT_TOP = "Announcement[id=%s] top flag changed: role=%s";
     public static final String MIXED_PERMISSION_DENIED = "前端按钮隐藏与后端 RBAC 同时阻止 permission=%s role=%s";
+    public static final String FRONT_COMPLAINT_CREATED = "投诉建议已提交，物业将尽快回复";
+    public static final String FRONT_COMPLAINT_REPLIED = "回复已提交";
+    public static final String FRONT_COMPLAINT_RESOLVED = "已标记为已处理";
 
     private Messages() {
     }

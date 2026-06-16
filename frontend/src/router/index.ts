@@ -3,6 +3,7 @@ import Dashboard from '../pages/Dashboard.vue';
 import Repairs from '../pages/Repairs.vue';
 import Payments from '../pages/Payments.vue';
 import Announcements from '../pages/Announcements.vue';
+import Complaints from '../pages/Complaints.vue';
 import Profile from '../pages/Profile.vue';
 import { registerGuards } from './guards';
 import { USER_ROLE } from '../constants/user';
@@ -32,6 +33,11 @@ const routes: RouteRecordRaw[] = [
       permission: 'announcement:view',
       roles: [USER_ROLE.RESIDENT, USER_ROLE.STAFF, USER_ROLE.ADMIN],
     },
+  },
+  {
+    path: '/complaints',
+    component: Complaints,
+    meta: { title: '投诉建议', permission: 'complaint:view', roles: [USER_ROLE.RESIDENT, USER_ROLE.STAFF, USER_ROLE.ADMIN] },
   },
   {
     path: '/profile',

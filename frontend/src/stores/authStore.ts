@@ -29,6 +29,10 @@ const defaultPermissions: PermissionCode[] = [
   'announcement:publish',
   'user:profile',
   'operationLog:view',
+  'complaint:view',
+  'complaint:create',
+  'complaint:reply',
+  'complaint:resolve',
 ];
 
 export const useAuthStore = defineStore('auth', () => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { House, Bell, CreditCard, DataAnalysis, User, Tools } from '@element-plus/icons-vue';
+import { House, Bell, CreditCard, DataAnalysis, User, Tools, ChatDotRound } from '@element-plus/icons-vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from './stores/authStore';
 
@@ -13,6 +13,7 @@ const navItems = [
   { path: '/repairs', label: '报修', icon: Tools },
   { path: '/payments', label: '缴费', icon: CreditCard },
   { path: '/announcements', label: '公告', icon: Bell },
+  { path: '/complaints', label: '投诉建议', icon: ChatDotRound },
   { path: '/profile', label: '我的', icon: User },
 ];
 

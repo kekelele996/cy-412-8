@@ -31,6 +31,10 @@ public final class LogTemplates {
     public static final String ERROR_WRAPPED = "Error[code=%s] wrapped at layer=%s role=%s";
     public static final String DASHBOARD_STATS = "Dashboard[repair/payment/announcement] stats queried by role=%s";
     public static final String FORMATTER_STATUS = "Formatter[RepairStatus=%s] rendered for role=%s";
+    public static final String COMPLAINT_LIST = "Complaint[status=%s] list fetched by role=%s";
+    public static final String COMPLAINT_CREATE = "Complaint[id=%s] created: category=%s role=%s";
+    public static final String COMPLAINT_REPLY = "Complaint[id=%s] replied by role=%s";
+    public static final String COMPLAINT_RESOLVE = "Complaint[id=%s] resolved by role=%s";
 
     private LogTemplates() {
     }

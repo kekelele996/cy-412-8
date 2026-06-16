@@ -90,6 +90,23 @@ CREATE TABLE IF NOT EXISTS role_permissions (
   UNIQUE KEY uk_role_permission (role_code, permission_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS complaints (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  user_id BIGINT NOT NULL,
+  category ENUM('complaint','suggestion') NOT NULL DEFAULT 'complaint',
+  title VARCHAR(120) NOT NULL,
+  content TEXT NOT NULL,
+  status ENUM('pending','replied','resolved') NOT NULL DEFAULT 'pending',
+  reply TEXT DEFAULT NULL,
+  replier_id BIGINT DEFAULT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_complaints_user FOREIGN KEY (user_id) REFERENCES users(id),
+  CONSTRAINT fk_complaints_replier FOREIGN KEY (replier_id) REFERENCES users(id),
+  INDEX idx_complaints_status (status),
+  INDEX idx_complaints_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS operation_logs (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   user_id BIGINT DEFAULT NULL,
@@ -120,7 +137,11 @@ INSERT INTO permissions(code, name) VALUES
 ('announcement:view', '查看公告'),
 ('announcement:publish', '发布公告'),
 ('user:profile', '编辑个人资料'),
-('operationLog:view', '查看操作日志')
+('operationLog:view', '查看操作日志'),
+('complaint:view', '查看投诉建议'),
+('complaint:create', '提交投诉建议'),
+('complaint:reply', '回复投诉建议'),
+('complaint:resolve', '标记已处理')
 ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 INSERT INTO role_permissions(role_code, permission_code) VALUES
@@ -131,6 +152,8 @@ INSERT INTO role_permissions(role_code, permission_code) VALUES
 ('resident','payment:pay'),
 ('resident','announcement:view'),
 ('resident','user:profile'),
+('resident','complaint:view'),
+('resident','complaint:create'),
 ('staff','dashboard:view'),
 ('staff','repair:view'),
 ('staff','repair:assign'),
@@ -139,6 +162,9 @@ INSERT INTO role_permissions(role_code, permission_code) VALUES
 ('staff','announcement:view'),
 ('staff','announcement:publish'),
 ('staff','user:profile'),
+('staff','complaint:view'),
+('staff','complaint:reply'),
+('staff','complaint:resolve'),
 ('admin','dashboard:view'),
 ('admin','repair:view'),
 ('admin','repair:create'),
@@ -149,7 +175,11 @@ INSERT INTO role_permissions(role_code, permission_code) VALUES
 ('admin','announcement:view'),
 ('admin','announcement:publish'),
 ('admin','user:profile'),
-('admin','operationLog:view')
+('admin','operationLog:view'),
+('admin','complaint:view'),
+('admin','complaint:create'),
+('admin','complaint:reply'),
+('admin','complaint:resolve')
 ON DUPLICATE KEY UPDATE permission_code = VALUES(permission_code);
 
 INSERT INTO users(id, phone, password_hash, nickname, avatar, role, building, unit, room) VALUES
@@ -175,3 +205,9 @@ INSERT INTO announcements(id, title, content, category, publisher_id, publish_at
 (2, '端午社区便民服务开放预约', '本周六开放家电清洗、磨刀、义诊服务，业主可在物业前台预约。', 'event', 2, '2026-06-12 14:00:00', 0, 128),
 (3, '6月公共区域消杀通知', '6月18日9:00-11:30进行楼道及地库消杀，请提前收好门口物品。', 'notice', 2, '2026-06-10 08:40:00', 0, 87)
 ON DUPLICATE KEY UPDATE title = VALUES(title), top = VALUES(top);
+
+INSERT INTO complaints(id, user_id, category, title, content, status, reply, replier_id) VALUES
+(1, 3, 'complaint', '小区绿化带被占用停车', '8栋楼下绿化带长期有车辆停放，草坪已大面积损毁，影响小区环境和行人安全。', 'resolved', '已联系车主挪车，并在该区域加装隔离桩，后续会补种草坪。', 2),
+(2, 3, 'suggestion', '建议增加快递柜', '目前快递柜数量不足，高峰期经常溢出，建议在3栋和5栋各增加一组。', 'replied', '感谢建议，已纳入下半年设施增设计划，预计10月前完成安装。', 1),
+(3, 3, 'complaint', '电梯异响频繁', '2单元电梯运行时有金属摩擦声，持续一周未解决，存在安全隐患。', 'pending', NULL, NULL)
+ON DUPLICATE KEY UPDATE title = VALUES(title), status = VALUES(status);

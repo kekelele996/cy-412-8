@@ -12,6 +12,10 @@ public final class Permissions {
     public static final String ANNOUNCEMENT_PUBLISH = "announcement:publish";
     public static final String USER_PROFILE = "user:profile";
     public static final String OPERATION_LOG_VIEW = "operationLog:view";
+    public static final String COMPLAINT_VIEW = "complaint:view";
+    public static final String COMPLAINT_CREATE = "complaint:create";
+    public static final String COMPLAINT_REPLY = "complaint:reply";
+    public static final String COMPLAINT_RESOLVE = "complaint:resolve";
 
     private Permissions() {
     }
